@@ -3,6 +3,7 @@ package travel.calculator.backend.Client;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import travel.calculator.backend.DTO.LocationDTO;
 import travel.calculator.backend.DTO.RouteResponseDTO;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,5 +25,17 @@ class ApiCallTest {
 
         assertNotNull(response.getFeatures().get(0).getProperties().getDistance());
         assertNotNull(response.getFeatures().get(0).getProperties().getTime());
+    }
+
+    @Test
+    public void getLongAndLat() {
+        LocationDTO response = apiCall.getGeoLocation("1015Lx", "Netherlands");
+        System.out.println(response.getFeatures().get(0).getProperties());
+        System.out.println(response.getFeatures().get(0).getProperties().getLatitude());
+        System.out.println(response.getFeatures().get(0).getProperties().getLongitude());
+
+
+        assertNotNull(response.getFeatures().get(0).getProperties().getLatitude());
+        assertNotNull(response.getFeatures().get(0).getProperties().getLongitude());
     }
 }
