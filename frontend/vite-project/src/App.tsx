@@ -1,6 +1,5 @@
 
 import './App.css'
-import axios from "axios";
 import {useEffect, useState} from "react";
 import BarChart from "./BarChart.tsx";
 import SearchForm from "./SearchForm.tsx";
@@ -14,6 +13,10 @@ import SearchForm from "./SearchForm.tsx";
 function App() {
         const [travelMethods, setTravelMethods] = useState<string[]>([])
         const [co2Values, setCO2Values] = useState<number[]>([])
+        const [graphStatus, setGraphStatus] = useState<string>('no input')
+        const loadingMessage = "The app is currently doing something very very impressive and cool." +
+            "Please wait patiently and prepare to gasp in awe, amazement and joy!"
+
 
 
     // const getDataFromBackend = async () => {
@@ -29,8 +32,9 @@ function App() {
     //     }, []);
 
         return (<>
-            <SearchForm travelMethods={travelMethods} setTravelMethods={setTravelMethods} co2Values={co2Values} setCO2Values={setCO2Values}/>
-            <BarChart/>
+            <SearchForm setTravelMethods={setTravelMethods} setCO2Values={setCO2Values} setGraphStatus={setGraphStatus}/>
+            {graphStatus == 'loading' && <p>{loadingMessage}</p>}
+            {graphStatus == 'fetched' && <BarChart co2Values={co2Values} travelMethods={travelMethods}/>}
             </>
         )
 

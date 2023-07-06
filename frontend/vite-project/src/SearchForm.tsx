@@ -1,13 +1,11 @@
-import React, {SetStateAction, useRef, useState} from "react";
+import React, {SetStateAction, useRef, } from "react";
 import axios from "axios";
-import {Simulate} from "react-dom/test-utils";
 
 
 type SearchFormProps = {
-    travelMethods: string[]
-    setTravelMethods: React.Dispatch<SetStateAction<string[]>>
-    co2Values: number
-    setCO2Values: React.Dispatch<SetStateAction<number>>
+    setTravelMethods: React.Dispatch<React.SetStateAction<string[]>>
+    setCO2Values: React.Dispatch<React.SetStateAction<number[]>>
+    setGraphStatus: React.Dispatch<React.SetStateAction<string>>
 }
 
 const SearchForm = (props: SearchFormProps) => {
@@ -20,6 +18,7 @@ const SearchForm = (props: SearchFormProps) => {
      const submit = async(e:React.ChangeEvent<HTMLFormElement>) => {
          e.preventDefault();
          console.log("submit happened")
+         props.setGraphStatus('loading')
          const p1 = postcode1InputEl.current?.value;
          const p2 = postcode2InputEl.current?.value;
          const c1 = country1InputEl.current?.value;
@@ -30,38 +29,16 @@ const SearchForm = (props: SearchFormProps) => {
          console.log("got here")
          try {
              const co2Response = await axios.get(
-             `${baseUrl}/postcode1=${p1}&country1=${c1}&postcode2=${p2}&country2=${c2}`)
+                 `${baseUrl}/postcode1=${p1}&country1=${c1}&postcode2=${p2}&country2=${c2}`)
              const co2Data = co2Response.data;
+             props.setTravelMethods(co2Data.methods);
+             props.setCO2Values(co2Data.values);
+             props.setGraphStatus('fetched')
              console.log(co2Data)
          } catch (error) {
              console.error(error)
          }
-    //     e.preventDefault()
-    //     const checkIfValid = developerNameFormat.test(`${inputEl.current?.value}`)
-    //     if (!checkIfValid) {
-    //         setValidNameInput(false)
-    //         return
-    //     }
-    //     setValidNameInput(true)
-    //     if (inputEl.current?.value) {
-    //         try {
-    //             const newDeveloperResponse = await axios.post(baseUrl, {
-    //                 name: inputEl.current?.value,
-    //                 bootcamp: bootcamp
-    //             })
-    //             const newDeveloper = newDeveloperResponse.data.developer
-    //             props.setSaltyData([...props.saltyData, newDeveloper])
-    //         } catch (error) {
-    //             console.error(error)
-    //         }
-    //     }
      }
-    //
-    // const changeBootcamp = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    //     e.preventDefault()
-    //     setBootcamp(e.target.value)
-    // }
-
     return (
         <>
             <form onSubmit={submit} id='addDeveloperForm'>
