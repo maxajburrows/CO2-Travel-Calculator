@@ -1,8 +1,7 @@
 import React, {SetStateAction, useRef, useState} from "react";
 import axios from "axios";
-import {saltyPersonDTO} from "./saltyPersonDTO.tsx";
 import {Simulate} from "react-dom/test-utils";
-import waiting = Simulate.waiting;
+
 
 type SearchFormProps = {
     travelMethods: string[]
@@ -19,18 +18,21 @@ const SearchForm = (props: SearchFormProps) => {
     const baseUrl = 'http://localhost:8080/api/travelCO2'
 
      const submit = async(e:React.ChangeEvent<HTMLFormElement>) => {
-        console.log("submit happened")
-        console.log(postcode1InputEl.current?.value);
-         console.log(postcode2InputEl.current?.value);
-         console.log(country1InputEl.current?.value);
-         console.log(country2InputEl.current?.value);
+         e.preventDefault();
+         console.log("submit happened")
+         const p1 = postcode1InputEl.current?.value;
+         const p2 = postcode2InputEl.current?.value;
+         const c1 = country1InputEl.current?.value;
+         const c2 = country2InputEl.current?.value;
+         // if (p1 == undefined || p2 == undefined || c1 == undefined || c2 == undefined) {
+         //     return
+         // }
+         console.log("got here")
          try {
-             const co2Response = await axios.get(baseUrl, {
-                 name: inputEl.current?.value,
-                 bootcamp: bootcamp
-             })
-             const newDeveloper = newDeveloperResponse.data.developer
-             props.setSaltyData([...props.saltyData, newDeveloper])
+             const co2Response = await axios.get(
+             `${baseUrl}/postcode1=${p1}&country1=${c1}&postcode2=${p2}&country2=${c2}`)
+             const co2Data = co2Response.data;
+             console.log(co2Data)
          } catch (error) {
              console.error(error)
          }
@@ -77,6 +79,7 @@ const SearchForm = (props: SearchFormProps) => {
                     <label htmlFor="country2">Country:</label>
                     <input id='country2' type='text' ref={country2InputEl}/>
                 </section>
+                <button>Search</button>
             </form>
         </>
     )
