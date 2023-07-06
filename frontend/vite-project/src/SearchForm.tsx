@@ -1,6 +1,8 @@
 import React, {SetStateAction, useRef, useState} from "react";
 import axios from "axios";
 import {saltyPersonDTO} from "./saltyPersonDTO.tsx";
+import {Simulate} from "react-dom/test-utils";
+import waiting = Simulate.waiting;
 
 type SearchFormProps = {
     travelMethods: string[]
@@ -17,6 +19,21 @@ const SearchForm = (props: SearchFormProps) => {
     const baseUrl = 'http://localhost:8080/api/travelCO2'
 
      const submit = async(e:React.ChangeEvent<HTMLFormElement>) => {
+        console.log("submit happened")
+        console.log(postcode1InputEl.current?.value);
+         console.log(postcode2InputEl.current?.value);
+         console.log(country1InputEl.current?.value);
+         console.log(country2InputEl.current?.value);
+         try {
+             const co2Response = await axios.get(baseUrl, {
+                 name: inputEl.current?.value,
+                 bootcamp: bootcamp
+             })
+             const newDeveloper = newDeveloperResponse.data.developer
+             props.setSaltyData([...props.saltyData, newDeveloper])
+         } catch (error) {
+             console.error(error)
+         }
     //     e.preventDefault()
     //     const checkIfValid = developerNameFormat.test(`${inputEl.current?.value}`)
     //     if (!checkIfValid) {

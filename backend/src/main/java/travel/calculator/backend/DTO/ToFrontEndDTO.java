@@ -1,7 +1,12 @@
 package travel.calculator.backend.DTO;
 
-import java.util.HashMap;
+import java.util.*;
 
-public class ToFrontEndDTO {
-    HashMap<String, Double> co2Values;
+public record ToFrontEndDTO(List<String> methods, List<Double> values) {
+
+
+    public ToFrontEndDTO(List<String> methods, List<Double> values) {
+        this.methods = methods;
+        this.values = values;
+    }
 }
