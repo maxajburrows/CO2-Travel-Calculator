@@ -7,6 +7,7 @@ type SearchFormProps = {
     setCO2Values: React.Dispatch<React.SetStateAction<number[]>>
     setETSValues: React.Dispatch<React.SetStateAction<number[]>>
     setGraphStatus: React.Dispatch<React.SetStateAction<string>>
+    setError: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const SearchForm = (props: SearchFormProps) => {
@@ -20,6 +21,7 @@ const SearchForm = (props: SearchFormProps) => {
          e.preventDefault();
          console.log("submit happened")
          props.setGraphStatus('loading')
+         props.setError(false)
          const p1 = postcode1InputEl.current?.value;
          const p2 = postcode2InputEl.current?.value;
          const c1 = country1InputEl.current?.value;
@@ -32,18 +34,23 @@ const SearchForm = (props: SearchFormProps) => {
              const co2Response = await axios.get(
                  `${baseUrl}/postcode1=${p1}&country1=${c1}&postcode2=${p2}&country2=${c2}`)
              const co2Data = co2Response.data;
+
              props.setTravelMethods(co2Data.methods);
              props.setCO2Values(co2Data.values);
              props.setETSValues(co2Data.valuesETS)
              props.setGraphStatus('fetched')
              console.log(co2Data)
+
          } catch (error) {
+             props.setError(true)
+             // console.log(made)
              console.error(error)
          }
      }
     return (
         <>
             <form onSubmit={submit} className="form">
+                <h2 className="formTitle">Where would you like to go?</h2>
                 <section className="field">
                     <h3>Start</h3>
                     <label htmlFor="postcode1">Postcode:</label>
