@@ -4,7 +4,7 @@ import {
     CategoryScale,
     LinearScale,
     Tooltip,
-    Legend
+    Legend, scales
 } from "chart.js";
 
 ChartJS.register(
@@ -16,11 +16,13 @@ ChartJS.register(
 )
 
 import { Bar } from 'react-chartjs-2'
+import './App.css'
 
 
 type BarChartProps = {
     travelMethods: string[]
     co2Values: number[]
+    chartYAxis: string
 }
 
 const BarChart = (props: BarChartProps) => {
@@ -50,22 +52,55 @@ const BarChart = (props: BarChartProps) => {
                 borderWidth: 1
             }]
         };
-        const config = {
-            type: 'bar',
-            data: data,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+    const options = {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Travel Method'
+                },
+                ticks: {
+                    font: {
+                        size: 12,
                     }
                 }
             },
-        };
+            y: {
+                title: {
+                    display: true,
+                    text: props.chartYAxis
+                },
+                ticks: {
+                    font: {
+                        size: 12,
+                    }
+                }
+            }
+        }
+
+    }
+        // const config = {
+        //     type: 'bar',
+        //     data: data,
+        //     options: {
+        //         scales: {
+        //             y: {
+        //                 beginAtZero: true
+        //             }
+        //         }
+        //     },
+        // };
 
 
         return (<Bar
                 data={data}
-                options={config}/>
+                options={options}
+    />
 
         )
 }

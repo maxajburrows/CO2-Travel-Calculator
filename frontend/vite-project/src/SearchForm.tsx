@@ -43,16 +43,16 @@ const SearchForm = (props: SearchFormProps) => {
      }
     return (
         <>
-            <form onSubmit={submit} id='addDeveloperForm'>
+            <form onSubmit={submit} className="form">
                 <section>
-                    <h2>Start</h2>
+                    <h3>Start</h3>
                     <label htmlFor="postcode1">Postcode:</label>
                     <input id='postcode1' type='text' ref={postcode1InputEl}/>
                     <label htmlFor="country1">Country:</label>
                     <input id='country1' type='text' ref={country1InputEl}/>
                 </section>
                 <section>
-                    <h2>Destination</h2>
+                    <h3>Destination</h3>
                     <label htmlFor="postcode2">Postcode:</label>
                     <input id='postcode2' type='text' ref={postcode2InputEl}/>
                     <label htmlFor="country2">Country:</label>
