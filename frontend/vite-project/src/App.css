@@ -3,10 +3,66 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+
 }
 
 .form {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 3fr 1fr;
+  grid-column-gap: 50px;
+  grid-row-gap: 20px;
+  background-color: rgb(220, 234, 204);
+  border-radius: 10px;
+  padding: 40px;
+  margin-bottom: 100px;
+  box-shadow: 0 0 3px 3px rgb(152 150 150);
+}
+
+body {
+  background-color: rgb(30, 30, 30);
+  font-family: Helvetica, Arial, sans-serif;
+
+}
+
+#btn {
+  background-color: rgb(79, 195, 247);
+  color: white;
+  grid-column: 1/-1;
+  width: 40%;
+  justify-self: center;
+}
+
+#btn:hover {
+  background-color: red;
+  border-color: red;
+}
+
+.bar {
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 40px 0;
+  box-shadow: 0 0 3px 3px rgb(152 150 150);
+}
+
+input {
+  margin: 0 10px;
+}
+
+.loading {
+  color: white;
+  font-size: 2em;
+}
+
+.field {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  padding-bottom: 40px;
+  box-shadow: 0 0 3px 3px rgb(152 150 150);
+}
+
+.br {
+  border : 10px solid white;
 }

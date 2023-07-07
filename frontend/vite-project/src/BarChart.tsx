@@ -31,7 +31,7 @@ const BarChart = (props: BarChartProps) => {
         const data = {
             labels: labels,
             datasets: [{
-                label: 'My First Dataset',
+                label: props.chartYAxis,
                 data: props.co2Values,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -62,41 +62,34 @@ const BarChart = (props: BarChartProps) => {
             x: {
                 title: {
                     display: true,
-                    text: 'Travel Method'
+                    text: 'Travel Method',
+                    font: {
+                        size: 24
+                    }
                 },
                 ticks: {
                     font: {
-                        size: 12,
+                        size: 18,
                     }
                 }
             },
             y: {
                 title: {
                     display: true,
-                    text: props.chartYAxis
+                    text: props.chartYAxis,
+                    font: {
+                        size: 24
+                    }
                 },
                 ticks: {
                     font: {
-                        size: 12,
+                        size: 18,
                     }
                 }
             }
         }
 
     }
-        // const config = {
-        //     type: 'bar',
-        //     data: data,
-        //     options: {
-        //         scales: {
-        //             y: {
-        //                 beginAtZero: true
-        //             }
-        //         }
-        //     },
-        // };
-
-
         return (<Bar
                 data={data}
                 options={options}
