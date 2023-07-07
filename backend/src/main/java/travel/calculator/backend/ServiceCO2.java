@@ -6,6 +6,7 @@ import travel.calculator.backend.Client.ApiCall;
 import travel.calculator.backend.DTO.LocationDTO;
 import travel.calculator.backend.DTO.RouteResponseDTO;
 import java.util.HashMap;
+import java.util.Set;
 
 @Service
 public class ServiceCO2 {
@@ -19,29 +20,53 @@ public class ServiceCO2 {
     private int TRAIN_CO2_PER_KM = 41;
     private int MOTOR_BIKE_CO2_PER_KM = 109;
 
-    public HashMap<String, Double> makeDTOs(String postcode1, String country1, String postcode2, String country2) {
+    public HashMap<String, Double>[] makeDTOs(String postcode1, String country1, String postcode2, String country2) {
         HashMap<String,String>[] travelInfo = getDifferentTravelValues(postcode1, country1, postcode2, country2);
+
         HashMap<String, Double> mapCO2 = calculateCO2(travelInfo[0]);
-        return mapCO2;
+
+        Double carDistance = Double.valueOf(travelInfo[0].get("car"));
+        HashMap<String, String> timeMap = travelInfo[1];
+        System.out.println(timeMap);
+
+        HashMap<String, Double> mapETS = enviroTravelScore(mapCO2, timeMap, carDistance/1000);
+
+
+        return new HashMap[]{mapCO2, mapETS};
     }
 
+    public HashMap<String, Double> enviroTravelScore(HashMap<String, Double> mapCO2, HashMap<String, String> timeMap, Double carDistance) {
+        System.out.println(timeMap);
+        Set<String> keys = timeMap.keySet();
+        HashMap<String, Double> mapETS = new HashMap<>();
+        for (String key : keys) {
+            String time = timeMap.get(key);
+            System.out.println(key);
+            Double ETS = (Math.pow(carDistance, 3)/(Math.pow((Double.valueOf(time)/3600),3)*(mapCO2.get(key))))/1000;
+            System.out.println(Math.pow(carDistance, 3));
+            System.out.println(Math.pow((Double.valueOf(time)/3600),3));
+            System.out.println((mapCO2.get(key)));
+            System.out.println(ETS);
+            mapETS.put(key, ETS);
+        }
+        return mapETS;
+    }
     public HashMap<String, Double> calculateCO2(HashMap<String, String> distances) {
-        double carCO2 = Double.valueOf(distances.get("car"))*CAR_CO2_PER_KM/1000;
-        System.out.println(Double.valueOf(distances.get("car")));
+        double carCO2 = Double.valueOf(distances.get("car"))*CAR_CO2_PER_KM/Math.pow(1000,2);
         double electricCarCO2 = carCO2/2;
-        double bikeCO2 = Double.valueOf(distances.get("bike"))*BIKE_CO2_PER_KM/1000;
-        double motorBikeCO2 = Double.valueOf(distances.get("bike"))*MOTOR_BIKE_CO2_PER_KM/1000;
+        double bikeCO2 = Double.valueOf(distances.get("bike"))*BIKE_CO2_PER_KM/Math.pow(1000,2);
+        double motorBikeCO2 = Double.valueOf(distances.get("bike"))*MOTOR_BIKE_CO2_PER_KM/Math.pow(1000,2);
         HashMap mapCO2 = new HashMap<String, Double>();
         mapCO2.put("car", carCO2);
-        mapCO2.put("electic car", electricCarCO2);
+        mapCO2.put("electric car", electricCarCO2);
         mapCO2.put("bike", bikeCO2);
-        mapCO2.put("motor bike", motorBikeCO2);
+        mapCO2.put("motorcycle", motorBikeCO2);
         if (distances.containsKey("bus")) {
-            double busCO2 = Double.valueOf(distances.get("bus"))*BUS_CO2_PER_KM/1000;
+            double busCO2 = Double.valueOf(distances.get("bus"))*BUS_CO2_PER_KM/Math.pow(1000,2);
             mapCO2.put("bus", busCO2);
             return mapCO2;
         }
-        double busCO2 = Double.valueOf(distances.get("train"))*TRAIN_CO2_PER_KM/1000;
+        double busCO2 = Double.valueOf(distances.get("train"))*TRAIN_CO2_PER_KM/Math.pow(1000,2);
         mapCO2.put("train", busCO2);
         return mapCO2;
     }
@@ -60,8 +85,9 @@ public class ServiceCO2 {
         distancesMap.put("motorcycle", motorbike[0]);
         HashMap<String, String> timesMap = new HashMap<>();
         timesMap.put("car", car[1]);
+        timesMap.put("electric car", car[1]);
         timesMap.put("bike", bike[1]);
-        timesMap.put("motorcycle", motorbike[0]);
+        timesMap.put("motorcycle", motorbike[1]);
         if (Integer.valueOf(transit[0]) < 30000) {
             distancesMap.put("bus", transit[0]);
             timesMap.put("bus", transit[1]);

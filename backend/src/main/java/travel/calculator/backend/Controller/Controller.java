@@ -18,20 +18,20 @@ public class Controller {
 
     @GetMapping("/postcode1={postcode1}&country1={country1}&postcode2={postcode2}&country2={country2}")
     ResponseEntity<ToFrontEndDTO> giveCO2Values(@PathVariable String postcode1, @PathVariable String country1, @PathVariable String postcode2, @PathVariable String country2) {
-        String postcode1NoBraces = postcode1.replaceAll("[{}]", "");
-        System.out.println(postcode1);
-        System.out.println(country1);
-        System.out.println(postcode1NoBraces);
-        HashMap<String, Double> co2Data = serviceCO2.makeDTOs(postcode1.replaceAll("[{}]", ""), country1.replaceAll("[{}]", ""),postcode2.replaceAll("[{}]", ""),country2.replaceAll("[{}]", ""));
+        HashMap<String, Double>[] data = serviceCO2.makeDTOs(postcode1.replaceAll("[{}]", ""), country1.replaceAll("[{}]", ""),postcode2.replaceAll("[{}]", ""),country2.replaceAll("[{}]", ""));
+        HashMap<String, Double> co2Data = data[0];
+        HashMap<String, Double> etsData = data[1];
         List<String> methods = new ArrayList<>();
         List<Double> values = new ArrayList<>();
+        List<Double> valuesETS = new ArrayList<>();
         Set<String> keys = co2Data.keySet();
         for (String key : keys) {
             methods.add(key);
             values.add(co2Data.get(key));
+            valuesETS.add(etsData.get(key));
         }
 
-        ToFrontEndDTO sendToFront = new ToFrontEndDTO(methods, values);
+        ToFrontEndDTO sendToFront = new ToFrontEndDTO(methods, values, valuesETS);
 
         return ResponseEntity.ok(sendToFront);
     }

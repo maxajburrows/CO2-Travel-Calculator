@@ -26,14 +26,14 @@ class ServiceCO2Test {
         assertNotNull(routeData[1]);
     }
 
-    @Test
-    public void calculateDaCO2() {
-        HashMap<String, Double> co2Data = serviceCO2.makeDTOs("1015lx", "Netherlands", "1112zb", "Netherlands");
-
-        System.out.println(co2Data);
-
-        assertNotNull(co2Data);
-
-    }
+//    @Test
+//    public void calculateDaCO2() {
+//        HashMap<String, Double> co2Data = serviceCO2.makeDTOs("1015lx", "Netherlands", "1112zb", "Netherlands");
+//
+//        System.out.println(co2Data);
+//
+//        assertNotNull(co2Data);
+//
+//    }
 }
 

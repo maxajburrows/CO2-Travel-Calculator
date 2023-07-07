@@ -1,10 +1,11 @@
-import React, {SetStateAction, useRef, } from "react";
+import React, { useRef, } from "react";
 import axios from "axios";
 
 
 type SearchFormProps = {
     setTravelMethods: React.Dispatch<React.SetStateAction<string[]>>
     setCO2Values: React.Dispatch<React.SetStateAction<number[]>>
+    setETSValues: React.Dispatch<React.SetStateAction<number[]>>
     setGraphStatus: React.Dispatch<React.SetStateAction<string>>
 }
 
@@ -26,13 +27,14 @@ const SearchForm = (props: SearchFormProps) => {
          // if (p1 == undefined || p2 == undefined || c1 == undefined || c2 == undefined) {
          //     return
          // }
-         console.log("got here")
+         // console.log("got here")
          try {
              const co2Response = await axios.get(
                  `${baseUrl}/postcode1=${p1}&country1=${c1}&postcode2=${p2}&country2=${c2}`)
              const co2Data = co2Response.data;
              props.setTravelMethods(co2Data.methods);
              props.setCO2Values(co2Data.values);
+             props.setETSValues(co2Data.valuesETS)
              props.setGraphStatus('fetched')
              console.log(co2Data)
          } catch (error) {
