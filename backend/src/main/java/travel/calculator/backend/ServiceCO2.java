@@ -42,9 +42,9 @@ public class ServiceCO2 {
         for (String key : keys) {
             String time = timeMap.get(key);
             System.out.println(key);
-            Double ETS = (Math.pow(carDistance, 3)/(Math.pow((Double.valueOf(time)/3600),3)*(mapCO2.get(key))))/1000;
+            Double ETS = (Math.pow(carDistance, 4.5)/(Math.pow((Double.valueOf(time)/3600),4.5)*(mapCO2.get(key))))/100000;
             System.out.println(Math.pow(carDistance, 3));
-            System.out.println(Math.pow((Double.valueOf(time)/3600),3));
+            System.out.println(time);
             System.out.println((mapCO2.get(key)));
             System.out.println(ETS);
             mapETS.put(key, ETS);
@@ -84,16 +84,16 @@ public class ServiceCO2 {
         distancesMap.put("bike", bike[0]);
         distancesMap.put("motorcycle", motorbike[0]);
         HashMap<String, String> timesMap = new HashMap<>();
-        timesMap.put("car", car[1]);
-        timesMap.put("electric car", car[1]);
+        timesMap.put("car", String.valueOf(Double.valueOf(car[1])*1.2));
+        timesMap.put("electric car", String.valueOf(Double.valueOf(car[1])*1.2));
         timesMap.put("bike", bike[1]);
-        timesMap.put("motorcycle", motorbike[1]);
+        timesMap.put("motorcycle", String.valueOf(Double.valueOf(motorbike[1])*1.2));
         if (Integer.valueOf(transit[0]) < 30000) {
             distancesMap.put("bus", transit[0]);
             timesMap.put("bus", transit[1]);
         } else {
             distancesMap.put("train", transit[0]);
-            timesMap.put("train", transit[1]);
+            timesMap.put("train", String.valueOf(Double.valueOf(transit[1])*0.9));
         }
         return new HashMap[]{distancesMap, timesMap};
     }

@@ -27,7 +27,8 @@ function App() {
         "travel time, distance travelled and CO2 emissions generated. It was conceived after tens of minutes of research by self proclaimed travel emssions expert " +
         "and all round fantastic bloke Max Burrows."
 const errorMessage = "Unfortunately one of your locations either doesn't exist of is impossible to get to. Please try again."
-    const aboutMessage = "Travel Like Greta allows you to compare the environmental credentials of different "
+    const aboutMessage = "Travel Like Greta allows you to compare the environmental credentials of different transport methods for your journey " +
+        "in an easy and intuitive way. Enter a start point and destination to get started!"
 
     const toggleMessage = () => {
             console.log("In funcky");
@@ -51,6 +52,7 @@ const errorMessage = "Unfortunately one of your locations either doesn't exist o
 
         return (<>
             <h1>{title}</h1>
+            <p className="about">{aboutMessage}</p>
             <SearchForm setTravelMethods={setTravelMethods} setCO2Values={setCO2Values} setETSValues={setETSValues} setGraphStatus={setGraphStatus} setError={setError}/>
             {error && <p className="error">{errorMessage}</p>}
             {(graphStatus == 'loading' && !error) && <p className="loading">{loadingMessage}</p>}
