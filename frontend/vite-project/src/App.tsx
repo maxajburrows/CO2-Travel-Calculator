@@ -35,7 +35,8 @@ console.log(etsValues)
         return (<>
             <SearchForm setTravelMethods={setTravelMethods} setCO2Values={setCO2Values} setETSValues={setETSValues} setGraphStatus={setGraphStatus}/>
             {graphStatus == 'loading' && <p>{loadingMessage}</p>}
-            {graphStatus == 'fetched' && <BarChart co2Values={co2Values} travelMethods={travelMethods}/>}
+            {graphStatus == 'fetched' && <><BarChart co2Values={co2Values} travelMethods={travelMethods}/>
+                <BarChart co2Values={etsValues} travelMethods={travelMethods}/></>}
             </>
         )
 
